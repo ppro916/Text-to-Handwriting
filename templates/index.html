@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>हस्तलिखित शब्द जनरेटर</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; }
+        .container { background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; text-align: center; margin-bottom: 30px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="text"], input[type="range"] { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; box-sizing: border-box; }
+        input[type="range"] { padding: 0; }
+        .size-value { text-align: center; font-weight: bold; margin-top: 5px; }
+        button { background-color: #4CAF50; color: white; padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; width: 100%; }
+        button:hover { background-color: #45a049; }
+        .note { margin-top: 20px; padding: 10px; background-color: #f8f8f8; border-left: 4px solid #4CAF50; }
+        .examples { margin-top: 15px; font-size: 14px; color: #666; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>हस्तलिखित शब्द जनरेटर</h1>
+        <form action="/generate" method="POST">
+            <div class="form-group">
+                <label for="word">शब्द प्रविष्ट करा:</label>
+                <input type="text" id="word" name="word" required placeholder="तुमचा शब्द इथे टाइप करा" value="Hello, World!">
+                <div class="examples">उदाहरण: "Hello, World!" किंवा "What's your name?"</div>
+            </div>
+            <div class="form-group">
+                <label for="size">अक्षर आकार (2px ते 200px):</label>
+                <input type="range" id="size" name="size" min="2" max="200" value="50">
+                <div class="size-value" id="sizeValue">50px</div>
+            </div>
+            <button type="submit">जनरेट करा</button>
+        </form>
+        <div class="note">
+            <p><strong>नोंद:</strong> हे जनरेटर तुमच्या शब्दाची हस्तलिखित आवृत्ती तयार करेल.</p>
+            <p><strong>समर्थित अक्षरे:</strong> A-Z, a-z</p>
+            <p><strong>समर्थित विरामचिन्हे:</strong> . , ! ? ; : ' " - ( )</p>
+            <p><strong>स्पेस:</strong> समर्थित</p>
+            <p>स्लायडर वापरून तुम्ही अक्षरांचा आकार 2px ते 200px पर्यंत समायोजित करू शकता.</p>
+        </div>
+    </div>
+    <script>
+        const sizeSlider = document.getElementById('size');
+        const sizeValue = document.getElementById('sizeValue');
+        sizeSlider.addEventListener('input', function() {
+            sizeValue.textContent = this.value + 'px';
+        });
+    </script>
+</body>
+</html>

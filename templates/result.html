@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>तुमचा हस्तलिखित शब्द</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; }
+        .container { background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); text-align: center; }
+        h1 { color: #333; margin-bottom: 30px; }
+        .word-container { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; margin: 20px 0; }
+        .letter { margin: 2px; image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; }
+        .space { display: inline-block; width: 20px; height: 1px; background-color: transparent; }
+        .button { display: inline-block; background-color: #4CAF50; color: white; padding: 12px 20px; text-decoration: none; border-radius: 4px; margin: 10px; cursor: pointer; }
+        .button:hover { background-color: #45a049; }
+        .size-control { margin: 20px 0; }
+        .size-control label { font-weight: bold; margin-right: 10px; }
+        input[type="range"] { width: 300px; max-width: 100%; }
+        .original-text { margin: 15px 0; padding: 10px; background-color: #f0f0f0; border-radius: 5px; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>तुमचा हस्तलिखित शब्द</h1>
+        <div class="original-text">
+            मूळ मजकूर: <strong>"{{ word }}"</strong>
+        </div>
+        <div class="size-control">
+            <label for="sizeAdjust">अक्षर आकार समायोजित करा (2px ते 200px):</label>
+            <input type="range" id="sizeAdjust" min="2" max="200" value="{{ size }}">
+            <span id="currentSize">{{ size }}px</span>
+        </div>
+        <div class="word-container">
+            {% for char in display_chars %}
+                {% if char == 'SPACE' %}
+                    <div class="space" style="width: {{ size|int * 0.4 }}px;"></div>
+                {% else %}
+                    <img src="{{ url_for('static', filename='letters/' + char + '.png') }}" 
+                         class="letter" alt="{{ char }}" style="height: {{ size }}px;">
+                {% endif %}
+            {% endfor %}
+        </div>
+        <p>वर्तमान आकार: <strong id="displaySize">{{ size }}px</strong></p>
+        <a href="/" class="button">नवीन शब्द तयार करा</a>
+        <button onclick="window.print()" class="button">प्रिंट करा</button>
+    </div>
+    <script>
+        const sizeAdjust = document.getElementById('sizeAdjust');
+        const currentSize = document.getElementById('currentSize');
+        const displaySize = document.getElementById('displaySize');
+        const letters = document.querySelectorAll('.letter');
+        const spaces = document.querySelectorAll('.space');
+        sizeAdjust.value = "{{ size }}";
+        currentSize.textContent = "{{ size }}px";
+        displaySize.textContent = "{{ size }}px";
+        sizeAdjust.addEventListener('input', function() {
+            const newSize = this.value + 'px';
+            const newSpaceSize = this.value * 0.4 + 'px';
+            currentSize.textContent = newSize;
+            displaySize.textContent = newSize;
+            letters.forEach(letter => {
+                letter.style.height = newSize;
+            });
+            spaces.forEach(space => {
+                space.style.width = newSpaceSize;
+            });
+        });
+    </script>
+</body>
+</html>
